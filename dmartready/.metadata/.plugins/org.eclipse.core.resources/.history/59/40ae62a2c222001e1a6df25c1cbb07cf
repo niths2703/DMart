@@ -1,0 +1,5 @@
+package com.dmartready.demo.repository;
+
+public interface StoreLocationRepository {
+
+}

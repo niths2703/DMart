@@ -1,0 +1,5 @@
+package com.dmartready.demo.configuration;
+
+public class DemoSecurityConfig {
+
+}

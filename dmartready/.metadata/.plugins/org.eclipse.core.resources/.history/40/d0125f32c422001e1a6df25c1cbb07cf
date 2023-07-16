@@ -1,0 +1,15 @@
+package com.dmartready.demo.service;
+
+import org.springframework.stereotype.Service;
+
+import com.dmartready.demo.repository.StockItemRepository;
+import com.dmartready.demo.repository.StockMovementRepository;
+import com.dmartready.demo.repository.StoreLocationRepository;
+
+@Service
+public class StockService {
+
+	 
+    
+   
+}

@@ -1,0 +1,41 @@
+package com.dmartready.demo.model;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Entity
+@Table
+@AllArgsConstructor
+@NoArgsConstructor
+public class StockMovement {
+
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "stock_item_id")
+    private StockItem stockItem;
+
+    @ManyToOne
+    @JoinColumn(name = "locationId")
+    private StoreLocation sourceLocation;
+    
+    @ManyToOne
+    @JoinColumn(name = "locationId")
+    private StoreLocation destinationLocation;
+
+    @Column(name = "quantity")
+    private int quantity;
+
+}

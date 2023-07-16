@@ -1,0 +1,88 @@
+package com.dmartready.demo.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.web.bind.annotation.PathVariable;
+
+import com.dmartready.demo.exception.StockItemException;
+import com.dmartready.demo.exception.StoreLocationException;
+import com.dmartready.demo.model.StockItem;
+import com.dmartready.demo.model.StoreLocation;
+import com.dmartready.demo.repository.StockItemRepository;
+import com.dmartready.demo.repository.StoreLocationRepository;
+
+public class StockServiceImpl implements StockService {
+
+	StockItemRepository stockItemRepository;
+    StoreLocationRepository storeLocationRepository;
+   
+	
+    
+    @Override
+	public StockItem addStockItem(StockItem stockItem) throws StockItemException {
+	
+		return stockItemRepository.save(stockItem);
+		
+	}
+	@Override
+	public StockItem updateStockItem(Long stockItemId,StockItem stockItem) throws StockItemException {
+		
+		Optional<StockItem> opt=stockItemRepository.findById(stockItemId);
+		
+		if(opt.isEmpty()) {
+			throw new StockItemException("No Stock Item with ID:"+stockItemId);
+		}
+		
+		stockItem.setStockItemId(stockItemId);
+		
+		
+		return stockItemRepository.save(stockItem);
+		
+	}
+	@Override
+	public StockItem deleteStockItem(Long stockItemId) throws StockItemException {
+		
+		
+        Optional<StockItem> opt=stockItemRepository.findById(stockItemId);
+		
+		if(opt.isEmpty()) {
+			throw new StockItemException("No Stock Item with ID:"+stockItemId);
+		}
+		
+		StockItem stockItem= opt.get();
+		
+		stockItemRepository.delete(stockItem);
+			
+		return stockItem;
+		
+	}
+	@Override
+	public String moveStockItem(Long stockItemId, Long sourceLocationId, Long destinationLocationId,int quantity) throws StoreLocationException, StockItemException {
+		// TODO Auto-generated method stub
+		
+		Optional<StoreLocation> optSource=storeLocationRepository.findById(sourceLocationId);
+		
+		Optional<StoreLocation> optDestination=storeLocationRepository.findById(destinationLocationId);
+		
+		if(optSource.isEmpty() || optDestination.isEmpty()  ) {
+			throw new StoreLocationException("Invalid Store Location(s)");
+		}
+		
+		StoreLocation source=optSource.get();
+		
+		StoreLocation destination=optDestination.get();
+		
+		//StockItem stockItem=
+		
+		
+		return null;
+	}
+	@Override
+	public List<StockItem> getStockItemQuantity(Long storeLocationId) throws StoreLocationException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+    
+   
+}

@@ -1,0 +1,9 @@
+package com.dmartready.demo.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.dmartready.demo.model.StockItem;
+
+public interface StockItemRepository extends JpaRepository< StockItem , Long>{
+
+}

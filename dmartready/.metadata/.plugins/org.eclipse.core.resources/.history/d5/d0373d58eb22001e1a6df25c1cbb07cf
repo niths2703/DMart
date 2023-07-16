@@ -1,0 +1,49 @@
+package com.dmartready.demo.service;
+
+import java.util.List;
+
+import com.dmartready.demo.exception.StockItemException;
+import com.dmartready.demo.exception.StoreLocationException;
+import com.dmartready.demo.model.StockItem;
+import com.dmartready.demo.model.StockMovement;
+import com.dmartready.demo.repository.StockItemRepository;
+import com.dmartready.demo.repository.StockMovementRepository;
+import com.dmartready.demo.repository.StoreLocationRepository;
+
+public class StockServiceImpl implements StockService {
+
+	StockItemRepository stockItemRepository;
+    StoreLocationRepository storeLocationRepository;
+    StockMovementRepository stockMovementRepository;
+	
+    
+    @Override
+	public StockItem addStockItem(StockItem stockItem) throws StockItemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public StockItem updateStockItem(StockItem stockItem) throws StockItemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public StockItem deleteStockItem(Long stockItemId) throws StockItemException {
+		// TODO Auto-generated method stub
+		
+		return null;
+		
+	}
+	@Override
+	public StockMovement moveStockItem(Long stockItemId, Long sourceLocationId, Long destinationLocationId,int quantity) throws StoreLocationException, StockItemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<StockItem> getStockItemQuantity(Long storeLocationId) throws StoreLocationException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+    
+   
+}

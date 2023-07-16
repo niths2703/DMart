@@ -1,0 +1,24 @@
+package com.dmartready.demo.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.dmartready.demo.exception.StockItemException;
+import com.dmartready.demo.exception.StoreLocationException;
+import com.dmartready.demo.model.StockItem;
+
+
+@Service
+public interface StockService {
+
+	 public StockItem addStockItem(StockItem stockItem) throws StockItemException;
+	 
+	 public StockItem updateStockItem(Long stockItemID,StockItem stockItem) throws StockItemException;
+	 
+	 public StockItem deleteStockItem(Long stockItemId) throws StockItemException;
+
+	 public String moveStockItem(Long stockItemId, Long sourceLocationId, Long destinationLocationId, Long quantity) throws StoreLocationException,StockItemException; 
+
+	 public List<StockItem> getStockItemQuantity(Long storeLocationId) throws StoreLocationException ;
+}

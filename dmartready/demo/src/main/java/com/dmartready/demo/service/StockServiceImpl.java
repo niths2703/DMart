@@ -1,0 +1,192 @@
+package com.dmartready.demo.service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import org.springframework.web.bind.annotation.PathVariable;
+
+import com.dmartready.demo.exception.StockItemException;
+import com.dmartready.demo.exception.StoreLocationException;
+import com.dmartready.demo.model.StockItem;
+import com.dmartready.demo.model.StoreLocation;
+import com.dmartready.demo.repository.StockItemRepository;
+import com.dmartready.demo.repository.StoreLocationRepository;
+
+public class StockServiceImpl implements StockService {
+
+	StockItemRepository stockItemRepository;
+    StoreLocationRepository storeLocationRepository;
+   
+	
+    
+    @Override
+	public StockItem addStockItem(StockItem stockItem) throws StockItemException {
+	    
+    	
+    	//add new stock to the stock database
+    	
+		return stockItemRepository.save(stockItem);
+		
+	}
+	@Override
+	public StockItem updateStockItem(Long stockItemId,StockItem stockItem) throws StockItemException {
+		
+		
+		// check if stock exists 
+		Optional<StockItem> opt=stockItemRepository.findById(stockItemId);
+		
+		
+		// if stock does not exist throw exception
+		if(opt.isEmpty()) {
+			throw new StockItemException("No Stock Item with ID:"+stockItemId);
+		}
+		
+		//update the stock if present with given id
+		stockItem.setStockItemId(stockItemId);
+		
+		
+		return stockItemRepository.save(stockItem);
+		
+	}
+	@Override
+	public StockItem deleteStockItem(Long stockItemId) throws StockItemException {
+		
+		// check if stock exists 
+        Optional<StockItem> opt=stockItemRepository.findById(stockItemId);
+		
+        // if stock does not exist throw exception
+		if(opt.isEmpty()) {
+			throw new StockItemException("No Stock Item with ID:"+stockItemId);
+		}
+		
+		StockItem stockItem= opt.get();
+		
+		//delete stock if found with given id
+		stockItemRepository.delete(stockItem);
+			
+		return stockItem;
+		
+	}
+	@Override
+	public String moveStockItem(Long stockItemId, Long sourceLocationId, Long destinationLocationId,Long quantity) throws StoreLocationException, StockItemException {
+		
+		//finding source location for moving stock
+		Optional<StoreLocation> optSource=storeLocationRepository.findById(sourceLocationId);
+		
+		//finding destination location for moving stock
+		Optional<StoreLocation> optDestination=storeLocationRepository.findById(destinationLocationId);
+		
+		//if any location is not found throw exception
+		if(optSource.isEmpty() || optDestination.isEmpty()  ) {
+			throw new StoreLocationException("Invalid Store Location(s)");
+		}
+		
+		StoreLocation source=optSource.get();
+		
+		StoreLocation destination=optDestination.get();
+		
+		//get all stock items at source location
+		List<StockItem> sItems=source.getStockItems();
+		
+		//get all stock items at destination location
+		List<StockItem> dItems=destination.getStockItems();
+		
+		
+		
+		boolean isItemPresentAtSource=false;
+		boolean isItemPresentAtDestination=false;
+		
+		
+		//checking if given stock item is present at location and in sufficient quantity
+		for(int i=0;i<sItems.size();i++) {
+			
+			
+			if(stockItemId==sItems.get(i).getStockItemId()) {
+				isItemPresentAtSource=true;
+				
+				Long q1=sItems.get(i).getQuantity();
+				
+				//if quantity at source is less than required
+				if(q1<quantity) {
+					return "Not Enough Stock At Source Location";
+				}
+				else {
+					sItems.get(i).setQuantity(q1-quantity);
+					
+					//checking if given stock is present at destination location
+					for(int j=0;j<dItems.size();j++) {
+						
+						//if stock is found
+						if(stockItemId==dItems.get(j).getStockItemId()) {
+							isItemPresentAtDestination=true;
+							
+							Long q2=dItems.get(j).getQuantity();
+							
+							dItems.get(j).setQuantity(q2+quantity);
+							
+							return "Stock Moved Successfully";
+						}
+					}
+					
+					//if stock item not present at destination location
+					
+					if(isItemPresentAtDestination==false) {
+						StockItem sItem=new StockItem();
+						
+						sItem.setName(sItems.get(i).getName());
+						sItem.setDescription(sItems.get(i).getDescription());
+						sItem.setPrice(sItems.get(i).getPrice());
+						sItem.setCategory(sItems.get(i).getCategory());
+						sItem.setQuantity(quantity);
+						
+						
+						dItems.add(sItem);
+						
+						return "Stocked Moved Successfully";
+					}
+					
+				
+				}
+				
+				break;
+			}
+			
+		}
+		
+		//check if stock not found at source location
+		if(isItemPresentAtSource==false) {
+			return "Stock Not Present At Source Location";
+		}
+		else {
+			return "Stock Moved Successfully";
+		}
+		
+		
+		
+	}
+	@Override
+	public List<StockItem> getStockItemQuantity(Long storeLocationId) throws StoreLocationException {
+		// TODO Auto-generated method stub
+		
+		//find store at given location 
+		Optional<StoreLocation> storeLocationOpt = storeLocationRepository.findById(storeLocationId);
+		
+		//if store location not found throw exception
+		if(storeLocationOpt.isEmpty()) {
+			throw new StoreLocationException("No Such Location");
+		}
+		
+		
+		StoreLocation storeLocation=storeLocationOpt.get();
+		
+		//get all stock items at given location
+		List<StockItem> stockItems=storeLocation.getStockItems();
+		
+		return stockItems;
+		
+		
+	}
+    
+   
+}

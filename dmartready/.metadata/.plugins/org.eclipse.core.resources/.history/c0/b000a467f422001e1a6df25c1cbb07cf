@@ -1,0 +1,12 @@
+package com.dmartready.demo.exception;
+
+public class StockMovementException extends RuntimeException{
+
+	public StockMovementException() {
+		
+	}
+	
+    public StockMovementException(String message) {
+		super(message);
+	}
+}

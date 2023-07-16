@@ -1,0 +1,5 @@
+package com.dmartready.demo.model;
+
+public class StoreLocation {
+
+}

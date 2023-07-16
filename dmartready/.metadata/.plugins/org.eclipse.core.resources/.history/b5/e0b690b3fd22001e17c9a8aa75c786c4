@@ -1,0 +1,54 @@
+package com.dmartready.demo.controller;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.dmartready.demo.model.StockItem;
+import com.dmartready.demo.model.StockMovement;
+import com.dmartready.demo.service.StockService;
+
+@RestController
+@RequestMapping("/api/stock")
+public class StockController {
+
+	StockService stockService;
+	
+   
+
+    @PostMapping("/items")
+    public StockItem addStockItem(@RequestBody StockItem stockItem) {
+        return stockService.addStockItem(stockItem);
+    }
+
+    @PutMapping("/items/{stockItemId}")
+    public StockItem updateStockItem(@PathVariable Long stockItemId,@RequestBody StockItem stockItem) {
+        
+        return stockService.updateStockItem(stockItemId,stockItem);
+    }
+
+    @DeleteMapping("/items/{stockItemId}")
+    public StockItem deleteStockItem(@PathVariable Long stockItemId) {
+       
+    	return stockService.deleteStockItem(stockItemId);
+    }
+
+    @PostMapping("/items/move/{stockItemId}/{sourceLocationId}/{destinationLocationId}/{quantity}")
+    public StockMovement moveStockItem( @PathVariable Long stockItemId,  @PathVariable Long sourceLocationId,@PathVariable Long destinationLocationId,@PathVariable int quantity
+    ) {
+        return stockService.moveStockItem( stockItemId,  sourceLocationId, destinationLocationId, quantity);
+    }
+
+    @GetMapping("/items/quantity/{storeLocationId}")
+    public List<StockItem> getStockItemQuantityByLocation(@PathVariable Long storeLocationId) {
+        return stockService.getStockItemQuantity(storeLocationId);
+    }
+}
