@@ -1,0 +1,5 @@
+package com.dmart.demo.model;
+
+public class StockItem {
+
+}

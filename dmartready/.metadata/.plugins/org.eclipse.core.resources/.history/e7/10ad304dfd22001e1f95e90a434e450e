@@ -1,0 +1,16 @@
+package com.dmart.demo.model;
+
+public class StoreLocation {
+
+	 @Id
+	    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	    private Long id;
+	    
+	    // Other location properties
+	    
+	    @ManyToMany
+	    @JoinTable(name = "location_stockitem",
+	               joinColumns = @JoinColumn(name = "location_id"),
+	               inverseJoinColumns = @JoinColumn(name = "stockitem_id"))
+	    private Set<StockItem> stockItems = new HashSet<>();
+}
